@@ -1,5 +1,5 @@
 from PIL import Image
-
+from gradio_client import Client
 
 class HFParasite:
     @classmethod
@@ -34,4 +34,20 @@ class HFParasite:
         steps: int | None,
     ) -> Image.Image:
         # Mock output
+        client = Client(HF_space)
+        api_schema = client.view_api(return_format="dict")
+        print(api_schema)
+
+        kwargs = {
+            "api_name": "/infer",
+            "prompt": prompt,
+            "seed": seed,
+            "width": width,
+            "height": height,
+            "guidance_scale": guidance_scale,
+            "num_inference_steps": steps,
+        }
+
+        result = client.predict(**kwargs)
+
         return Image.new("RGB", (100, 100))
