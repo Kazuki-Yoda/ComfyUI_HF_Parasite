@@ -1,4 +1,4 @@
-from .nodes import *
+from .nodes_template import *
 
 
 #  Map all your custom nodes classes with the names that will be displayed in the UI.
