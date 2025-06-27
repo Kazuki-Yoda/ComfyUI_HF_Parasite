@@ -2,6 +2,9 @@ import torch
 from PIL import Image
 from gradio_client import Client
 
+from .modules.parser import build_api_kwargs
+
+
 class HFParasite:
     @classmethod
     def INPUT_TYPES(self) -> dict[str, dict[str, tuple[str]]]:
@@ -10,6 +13,7 @@ class HFParasite:
                 "HF_space": ("STRING",),
             },
             "optional": {
+                "api_name": ("STRING",),
                 "prompt": ("STRING",),
                 "seed": ("INT",),
                 "width": ("INT",),
@@ -27,6 +31,7 @@ class HFParasite:
     def call(
         self,
         HF_space: str,
+        api_name: str | None,
         prompt: str | None,
         seed: int | None,
         width: int | None,
@@ -39,8 +44,8 @@ class HFParasite:
         api_schema = client.view_api(return_format="dict")
         print(api_schema)
 
-        kwargs = {
-            "api_name": "/infer",
+        inputs = {
+            "api_name": api_name,
             "prompt": prompt,
             "seed": seed,
             "width": width,
@@ -49,7 +54,11 @@ class HFParasite:
             "num_inference_steps": steps,
         }
 
-        # result = client.predict(**kwargs)
+        kwargs = build_api_kwargs(HF_space, inputs)
+        print(kwargs)
+
+        result = client.predict(**kwargs)
+        print(result)
 
         # return (Image.new("RGB", (width, height)), None)
 
