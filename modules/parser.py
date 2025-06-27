@@ -1,6 +1,6 @@
 from gradio_client import Client
 
-def extract_model_parameters(space_name, hf_token=None):
+def extract_model_parameters(space_name, api_name, hf_token=None):
     """
     Hugging Face Spaceからパラメータ情報を抽出し、ComfyUI用の辞書形式で返す
     
@@ -41,7 +41,7 @@ def extract_model_parameters(space_name, hf_token=None):
         
         # 最初のエンドポイントを使用
         endpoint = list(endpoints.values())[0]
-        api_name = endpoint.get('api_name', '/predict')
+        api_name = endpoint.get('api_name', api_name)
         
         parameters = {}
         
@@ -125,14 +125,14 @@ def build_api_kwargs(space_name, user_inputs, hf_token=None):
         dict: API呼び出し用のkwargs
     """
     # パラメータ情報を取得
-    param_info = extract_model_parameters(space_name, hf_token)
+    param_info = extract_model_parameters(space_name, user_inputs["api_name"], hf_token)
     api_name = param_info['api_name']
     api_params = param_info['parameters']
     
     if not api_params:
         return {'api_name': api_name}
     
-    kwargs = {'api_name': api_name}
+    kwargs = {'api_name': user_inputs["api_name"]}
     
     # パラメータ名のマッピング（ComfyUI -> API）
     param_mapping = {
@@ -173,11 +173,11 @@ def build_api_kwargs(space_name, user_inputs, hf_token=None):
 # テスト実行
 if __name__ == "__main__":
     # テスト用のspace
-    space_name = "black-forest-labs/FLUX.1-dev"
+    space_name = "runwayml/stable-diffusion-v1-5"
     
     print(f"=== {space_name} のパラメータ抽出 ===")
     result = extract_model_parameters(space_name)
-    
+    print(result)
     print(f"API名: {result['api_name']}")
     print("パラメータ:")
     for param_name, param_info in result['parameters'].items():
