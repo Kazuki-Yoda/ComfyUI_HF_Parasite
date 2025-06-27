@@ -1,4 +1,4 @@
-from test_gradio_client import Client
+from gradio_client import Client
 
 client = Client("black-forest-labs/FLUX.1-dev")
 result = client.predict(
