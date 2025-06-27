@@ -1,3 +1,6 @@
+from PIL import Image
+
+
 class HFParasite:
     @classmethod
     def INPUT_TYPES(self) -> dict[str, dict[str, tuple[str]]]:
@@ -15,19 +18,20 @@ class HFParasite:
             }
         }
 
-    RETURN_TYPES = ("STRING",)
-    RETURN_NAMES = ("HF_space",)
+    RETURN_TYPES = ("IMAGE",)
+    RETURN_NAMES = ("image",)
     FUNCTION = "call"
-    CATEGORY = "CustomNodesTemplate"
+    CATEGORY = "HF_Parasite"
 
     def call(
         self,
         HF_space: str,
-        prompt: str,
-        seed: int,
-        width: int,
-        height: int,
-        guidance_scale: float,
-        steps: int,
-    ) -> str:
-        return HF_space
+        prompt: str | None,
+        seed: int | None,
+        width: int | None,
+        height: int | None,
+        guidance_scale: float | None,
+        steps: int | None,
+    ) -> Image.Image:
+        # Mock output
+        return Image.new("RGB", (100, 100))
