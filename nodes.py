@@ -1,3 +1,4 @@
+import torch
 from PIL import Image
 from gradio_client import Client
 
@@ -32,7 +33,7 @@ class HFParasite:
         height: int | None,
         guidance_scale: float | None,
         steps: int | None,
-    ) -> Image.Image:
+    ) -> tuple[torch.Tensor, torch.Tensor]:
         # Mock output
         client = Client(HF_space)
         api_schema = client.view_api(return_format="dict")
@@ -48,6 +49,10 @@ class HFParasite:
             "num_inference_steps": steps,
         }
 
-        result = client.predict(**kwargs)
+        # result = client.predict(**kwargs)
 
-        return Image.new("RGB", (100, 100))
+        # return (Image.new("RGB", (width, height)), None)
+
+        # Mock output
+        image = torch.randn(1, width, height, 3)
+        return (image,)
