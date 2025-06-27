@@ -1,12 +1,9 @@
-from .nodes_template import *
+from .nodes import HFParasite
 
 
 #  Map all your custom nodes classes with the names that will be displayed in the UI.
 NODE_CLASS_MAPPINGS = {
-    "(Down)Load My Model": MyModelLoader,
-    "Calculate Plus": CalculatePlus,
-    "Calculate Minus": CalculateMinus,
-    "Example Output Node": ExampleOutputNode,
+    "HF Parasite": HFParasite,
 }
 
 
